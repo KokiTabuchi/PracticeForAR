@@ -18,6 +18,7 @@ public class LaserEffect : MonoBehaviour
     {
         timer += Time.deltaTime;
 
+        //ˆê’èŽžŠÔˆÈã‚ÅƒŒ[ƒU[‚ÍÁ‚µ‚Ä‚¨‚­
         if(timer > limit)
         {
             Destroy(this.gameObject);

@@ -45,12 +45,14 @@ public class GameSceneManager : MonoBehaviour
     {
         timer += Time.deltaTime;
 
+        //ˆê’èŠÔ‚Å“G‚ğ¶¬
         if (timer > enemyInterval)
         {
             timer = 0f;
             SpawnEnemy();
         }
 
+        //“G‚ÉƒŒ[ƒU[‚ª“–‚½‚Á‚½‚Æ‚«‚Ìˆ—
         if (getScore == true)
         {
             StartCoroutine(ScoreAnimation(100f, 1f));
