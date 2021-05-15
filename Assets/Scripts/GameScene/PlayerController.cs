@@ -54,17 +54,20 @@ public class PlayerController : MonoBehaviour
             {
                 Touch touch = Input.touches[0];
 
+                //指でタッチ
                 if (touch.phase == TouchPhase.Began)
                 {
                     Debug.Log("タッチ！");
                     Attack();
                 }
 
-                /*
+                /*指で動かす
                 else if (touch.phase == TouchPhase.Moved)
                 {
 
                 }
+
+                //指が離れる
                 else if (touch.phase == TouchPhase.Ended)
                 {
 
