@@ -18,7 +18,7 @@ public class LaserEffect : MonoBehaviour
     {
         timer += Time.deltaTime;
 
-        //一定時間以上でレーザーは消しておく
+        //一定時間以上でレーザーは消滅
         if(timer > limit)
         {
             Destroy(this.gameObject);
