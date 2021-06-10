@@ -9,6 +9,12 @@ public class EnemyController : MonoBehaviour
     public GameSceneManager manager;
 
     private float moveSpeed = 1f;
+    private float enemySpeed = 5f;
+
+    bool right, left;
+    private float t;
+    [SerializeField]
+    private float a, b;
 
     private float animationX = 1f;
 
@@ -18,14 +24,43 @@ public class EnemyController : MonoBehaviour
         gameSceneManager = GameObject.Find("GameSceneManager");
         manager = gameSceneManager.GetComponent<GameSceneManager>();
         //Animation();
+        right = true;
+        left = false;
     }
 
     // Update is called once per frame
     void Update()
     {
+        //t = Random.Range(a, b);
         // 変数 moveSpeed を乗算した速度でオブジェクトを前方向に移動する
         this.transform.position += transform.forward * moveSpeed * Time.deltaTime;
+        if (right)
+        {
+            this.transform.position += transform.right * enemySpeed * Time.deltaTime;
+            
+            Invoke("Right", 2);
+        }
+        if (left)
+        {
+            this.transform.position -= transform.right * enemySpeed * Time.deltaTime;
+            
+            Invoke("Left", 2);
+        }
+
     }
+
+    private void Right()
+    {
+        right = false;
+        left = true;
+    }
+
+    private void Left()
+    {
+        left = false;
+        right = true;
+    }
+        
 
     private void OnCollisionEnter(Collision collision)
     {
