@@ -10,11 +10,12 @@ public class PlayerController : MonoBehaviour
     private GameObject muzzle;
 
     private GameObject shotLaser;
+    private ParticleSystem ps;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        ps = muzzle.GetComponent<ParticleSystem>();
     }
 
     // Update is called once per frame
@@ -40,11 +41,14 @@ public class PlayerController : MonoBehaviour
             {
 
             }
+            */
+
             else if (Input.GetMouseButtonUp(0))
             {
-
+                //スプレー噴射のエフェクト停止
+                ps.Stop();
             }
-            */
+            
         }
 
         // 端末上での操作取得
@@ -66,13 +70,14 @@ public class PlayerController : MonoBehaviour
                 {
 
                 }
+                */
 
                 //指が離れる
                 else if (touch.phase == TouchPhase.Ended)
                 {
-
+                    //スプレー噴射のエフェクト開始
+                    ps.Stop();
                 }
-                */
             }
         }
     }
@@ -88,5 +93,15 @@ public class PlayerController : MonoBehaviour
         Vector3 laserDirection = this.transform.rotation * Vector3.forward;
         //その方向にAddForceで速度を付ける
         shotLaser.GetComponent<Rigidbody>().AddForce(laserDirection, ForceMode.Impulse);
+
+        //スプレー噴射のエフェクト開始
+        ps.Play();
+    }
+
+    //パーティクルがぶつかったときの処理（未完成）
+    void OnParticleCollision(GameObject obj)
+    {
+        Destroy(obj);
+        Debug.Log("衝突");
     }
 }
