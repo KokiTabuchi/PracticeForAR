@@ -14,7 +14,7 @@ public class EnemyController : MonoBehaviour
     bool right, left;
     private float t;
     [SerializeField]
-    private float a, b;
+    private float a,b;
 
     private float animationX = 1f;
 
@@ -26,12 +26,14 @@ public class EnemyController : MonoBehaviour
         //Animation();
         right = true;
         left = false;
+        
     }
 
     // Update is called once per frame
     void Update()
     {
-        //t = Random.Range(a, b);
+        t = Random.Range(a, b);
+        Debug.Log(Random.Range(a,b));
         // 変数 moveSpeed を乗算した速度でオブジェクトを前方向に移動する
         this.transform.position += transform.forward * moveSpeed * Time.deltaTime;
         if (right)
@@ -46,7 +48,7 @@ public class EnemyController : MonoBehaviour
             
             Invoke("Left", 2);
         }
-
+        
     }
 
     private void Right()
@@ -67,7 +69,7 @@ public class EnemyController : MonoBehaviour
         //Playerにぶつかったときの挙動
         if(collision.gameObject.tag == "Player")
         {
-            Debug.Log("うっ...！");
+            //Debug.Log("うっ...！");
             Destroy(this.gameObject);
         }
 
