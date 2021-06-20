@@ -17,6 +17,8 @@ MonoBehaviour:
   - Custom
   - Example
   - General
+  - ClearScene
   Categories:
   - {fileID: 11400000, guid: b01e98f4801f7124ba39e1dac4debf90, type: 2}
   - {fileID: 11400000, guid: f6c906899a6155947acd70de5c96c764, type: 2}
+  - {fileID: 11400000, guid: c195b5808374c8b4aa003942a125c5a8, type: 2}
