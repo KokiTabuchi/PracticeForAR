@@ -9,13 +9,15 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private GameObject muzzle;
 
-    private GameObject shotLaser;
     private ParticleSystem ps;
+    private GameObject shotLaser;
 
     // Start is called before the first frame update
     void Start()
     {
         ps = muzzle.GetComponent<ParticleSystem>();
+        //最初は噴射しない様にする
+        muzzle.SetActive(false);
     }
 
     // Update is called once per frame
@@ -45,8 +47,8 @@ public class PlayerController : MonoBehaviour
 
             else if (Input.GetMouseButtonUp(0))
             {
-                //スプレー噴射のエフェクト停止
-                ps.Stop();
+                //スプレー停止処理
+                StartCoroutine(SprayStop());
             }
             
         }
@@ -75,8 +77,8 @@ public class PlayerController : MonoBehaviour
                 //指が離れる
                 else if (touch.phase == TouchPhase.Ended)
                 {
-                    //スプレー噴射のエフェクト開始
-                    ps.Stop();
+                    //スプレー停止処理
+                    StartCoroutine(SprayStop());
                 }
             }
         }
@@ -85,7 +87,7 @@ public class PlayerController : MonoBehaviour
     //敵を攻撃
     private void Attack()
     {
-        //レーザーの生成
+        /*レーザーの生成
         shotLaser = Instantiate(laser, muzzle.transform);
         //このままだとmuzzleが親になるので、親オブジェクトから外す
         shotLaser.transform.parent = null;
@@ -93,15 +95,27 @@ public class PlayerController : MonoBehaviour
         Vector3 laserDirection = this.transform.rotation * Vector3.forward;
         //その方向にAddForceで速度を付ける
         shotLaser.GetComponent<Rigidbody>().AddForce(laserDirection, ForceMode.Impulse);
+        */
 
         //スプレー噴射のエフェクト開始
-        ps.Play();
+        muzzle.SetActive(true);
     }
 
-    //パーティクルがぶつかったときの処理（未完成）
-    void OnParticleCollision(GameObject obj)
+    //スプレー停止処理
+    IEnumerator SprayStop()
     {
-        Destroy(obj);
-        Debug.Log("衝突");
+        //スプレー噴射のエフェクト終了
+        ps.Stop();
+        //ParticleのDuration0.2秒分待つ
+        yield return new WaitForSeconds(0.2f);
+        //衝突判定も消す
+        muzzle.SetActive(false);
     }
+
+    //人がぶつかったときの処理
+    private void OnTriggerEnter(Collider other)
+    {
+        Debug.Log("衝突！");
+    }
+
 }
