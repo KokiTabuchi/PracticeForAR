@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 893882080582305973}
   - component: {fileID: 893882080587539893}
   m_Layer: 0
-  m_Name: Sci-Fi Rifle_fbx
+  m_Name: SprayRifle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1077,7 +1077,7 @@ ParticleSystem:
     m_BurstCount: 0
     m_Bursts: []
   SizeModule:
-    enabled: 0
+    enabled: 1
     curve:
       serializedVersion: 2
       minMaxState: 1
@@ -1088,22 +1088,22 @@ ParticleSystem:
         m_Curve:
         - serializedVersion: 3
           time: 0
-          value: 0
-          inSlope: 0
-          outSlope: 1
+          value: 1
+          inSlope: -2
+          outSlope: -2
           tangentMode: 0
           weightedMode: 0
-          inWeight: 0.33333334
-          outWeight: 0.33333334
+          inWeight: 0
+          outWeight: 0
         - serializedVersion: 3
           time: 1
-          value: 1
-          inSlope: 1
+          value: 0
+          inSlope: 0
           outSlope: 0
           tangentMode: 0
           weightedMode: 0
-          inWeight: 0.33333334
-          outWeight: 0.33333334
+          inWeight: 0
+          outWeight: 0
         m_PreInfinity: 2
         m_PostInfinity: 2
         m_RotationOrder: 4
@@ -2788,7 +2788,7 @@ ParticleSystem:
     strength:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 1
+      scalar: -0.24
       minScalar: 1
       maxCurve:
         serializedVersion: 2
@@ -4921,8 +4921,8 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 5
-  m_Center: {x: -0.000000059604645, y: -26.4, z: 0.0000003961846}
+  m_Radius: 4
+  m_Center: {x: -0.000000059604645, y: -23.58, z: 0.0000003961846}
 --- !u!135 &893882081086798921
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -4934,8 +4934,8 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 3.6
-  m_Center: {x: -0.000000059604645, y: -19.34, z: 0.0000003961846}
+  m_Radius: 3.5
+  m_Center: {x: -0.000000059604645, y: -18.5, z: 0.0000003961846}
 --- !u!135 &893882081086798920
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -4948,7 +4948,7 @@ SphereCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 2.74
-  m_Center: {x: -0.000000059604645, y: -13.69, z: 0.0000003961846}
+  m_Center: {x: -0.000000059604645, y: -13.96, z: 0.0000003961846}
 --- !u!136 &893882081086798927
 CapsuleCollider:
   m_ObjectHideFlags: 0
