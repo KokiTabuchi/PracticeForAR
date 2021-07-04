@@ -1,23 +1,30 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
     [SerializeField]
     private GameObject laser;
     [SerializeField]
-    private GameObject muzzle;
+    private GameObject[] weapon = new GameObject[2];
 
+    private GameObject muzzle;
     private ParticleSystem ps;
     private GameObject shotLaser;
+
+    private int WeaponNumber;
+
+    [SerializeField]
+    private GameObject weaponButton;
+
 
     // Start is called before the first frame update
     void Start()
     {
-        ps = muzzle.GetComponent<ParticleSystem>();
-        //最初は噴射しない様にする
-        muzzle.SetActive(false);
+        //まずはスプレーを装備した状態にする
+        ChangeWeapon();
     }
 
     // Update is called once per frame
@@ -48,7 +55,7 @@ public class PlayerController : MonoBehaviour
             else if (Input.GetMouseButtonUp(0))
             {
                 //スプレー停止処理
-                StartCoroutine(SprayStop());
+                StartCoroutine(muzzleStop());
             }
             
         }
@@ -78,7 +85,7 @@ public class PlayerController : MonoBehaviour
                 else if (touch.phase == TouchPhase.Ended)
                 {
                     //スプレー停止処理
-                    StartCoroutine(SprayStop());
+                    StartCoroutine(muzzleStop());
                 }
             }
         }
@@ -102,20 +109,67 @@ public class PlayerController : MonoBehaviour
     }
 
     //スプレー停止処理
-    IEnumerator SprayStop()
+    IEnumerator muzzleStop()
     {
         //スプレー噴射のエフェクト終了
         ps.Stop();
-        //ParticleのDuration0.2秒分待つ
-        yield return new WaitForSeconds(0.2f);
+        //ParticleのstartLifeTime分待つ
+        yield return new WaitForSeconds(ps.main.startLifetime.constant);
         //衝突判定も消す
         muzzle.SetActive(false);
     }
 
-    //人がぶつかったときの処理
+    //スプレーにあてたときの処理
     private void OnTriggerEnter(Collider other)
     {
         Debug.Log("衝突！");
     }
 
+    //武器変更ボタンを押した時の処理
+    public void WeaponButtonDown()
+    {
+        //ボタンの色や画像を変える処理
+        switch (WeaponNumber)
+        {
+            case 0:
+                weaponButton.GetComponent<Image>().color = Color.blue;
+                break;
+
+            case 1:
+                weaponButton.GetComponent<Image>().color = Color.red;
+                break;
+
+            default:
+                break;
+        }
+
+        ChangeWeapon();
+    }
+
+    //武器変更処理
+    private void ChangeWeapon()
+    {
+        //一旦全部の武器をfalseにする
+        for (int i = 0; i < 2; i++)
+        {
+            weapon[i].SetActive(false);
+        }
+
+        //WeaponNumberに対応する武器だけtrueにする
+        weapon[WeaponNumber].SetActive(true);
+        //該当武器の一番上の階層にある子オブジェクトをmuzzleとして取得する
+        muzzle = weapon[WeaponNumber].transform.GetChild(0).gameObject;
+        //psをmuzzleについてるParticleSystemに変更する
+        ps = muzzle.GetComponent<ParticleSystem>();
+
+        //最初は噴射しないようにする
+        muzzle.SetActive(false);
+
+        //WeaponNumberを加算しておく
+        WeaponNumber++;
+        if (WeaponNumber >= 2)
+        {
+            WeaponNumber = 0;
+        }
+    }
 }
