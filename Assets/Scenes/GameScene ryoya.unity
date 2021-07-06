@@ -3974,7 +3974,7 @@ GameObject:
   - component: {fileID: 2122414982}
   - component: {fileID: 2122414981}
   m_Layer: 0
-  m_Name: shaka_Sphere
+  m_Name: Sphere
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
