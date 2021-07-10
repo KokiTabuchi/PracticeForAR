@@ -7,7 +7,7 @@ using UnityEngine.AI;//NavMeshagentを使うために記述する
 
 public class Honeycomb_Emerge : MonoBehaviour
 {
-    
+    //ゲームのプレイヤーのオブジェクト  
     public GameObject Player;
     //蜂の巣のゲームオブジェクト
     public GameObject comb;
@@ -33,28 +33,23 @@ public class Honeycomb_Emerge : MonoBehaviour
 
     //敵の生成の時間とインターバル
     float timer = 0.0f;
-    float enemyInterval = 15.0f;
+    float enemyInterval = 5.0f;
 
 
     Vector3[] wayPoints = new Vector3[3];//徘徊するポイントの座標を代入するVector3型の変数を配列で作る
-    private int currentRoot;//現在目指すポイントを代入する変数
+    private int currentRoot=0;//現在目指すポイントを代入する変数
     private int Mode;//敵の行動パターンを分けるための変数
     //public Transform player;//プレイヤーの位置を取得するためのTransform型の変数
     //public Transform enemypos;//敵の位置を取得するためのTransform型の変数
-    private NavMeshAgent agent;//NavMeshAgentの情報を取得するためのNavmeshagent型の変数
+    //private NavMeshAgent agent;//NavMeshAgentの情報を取得するためのNavmeshagent型の変数
 
-
-    // オブジェクトが停止するターゲットオブジェクトとの距離を格納する変数
-    public float stopDistance = 10.0f;
-    // オブジェクトがターゲットに向かって移動を開始する距離を格納する変数
-    public float moveDistance = 10.0f;
     //敵の速さ
-    float moveSpeed = 1.0f;
+    float moveSpeed = 2.0f;
 
     public void Start()
     {
         //Player = GameObject.Find("Player");
-        agent = GetComponent<NavMeshAgent>();//NavMeshAgentの情報をagentに代入
+       // agent = GetComponent<NavMeshAgent>();//NavMeshAgentの情報をagentに代入
         comb.SetActive(false);//蜂の巣を非表示にする
         setHonneyComb();//蜂の巣オブジェクトを表示する場所をランダムで決定
 
@@ -126,21 +121,14 @@ public class Honeycomb_Emerge : MonoBehaviour
 
         for(int i = 0; i < spawnedEnemy.Length; i++)
         {
-            if(i%2 == 0)
-            {
                 enemyMoveRandom(i);
-            }
-            else
-            {
-                //enemyMoveDirect();
-                enemyMoveRandom(i);
-            }
         }
     }
 
     //敵を徘徊するように動かすスクリプト
     public void enemyMoveRandom(int enemy_num)
     {
+        Debug.Log("移動");
         Vector3 pos = wayPoints[currentRoot];//Vector3型のposに現在の目的地の座標を代入
         float distance = Vector3.Distance(spawnedEnemy[enemy_num].transform.position, Player.transform.position);//敵とプレイヤーの距離を求める
 
@@ -167,11 +155,13 @@ public class Honeycomb_Emerge : MonoBehaviour
                         currentRoot = 0;//currentRootを0にする
                     }
                 }
-                GetComponent<NavMeshAgent>().SetDestination(pos);//NavMeshAgentの情報を取得し目的地をposにする
+                //次の目的場所を向く
+                spawnedEnemy[enemy_num].transform.LookAt(wayPoints[currentRoot]);
+                transform.position = transform.position + transform.forward * moveSpeed * Time.deltaTime;//GetComponent<NavMeshAgent>().SetDestination(pos);//NavMeshAgentの情報を取得し目的地をposにする
                 break;//switch文の各パターンの最後につける
 
             case 1://case1の場合
-                agent.destination = Player.transform.position;//プレイヤーに向かって進む		
+                enemyMoveDirect(enemy_num);//プレイヤーに向かって進む		
                 break;//switch文の各パターンの最後につける
         }
 
@@ -184,16 +174,11 @@ public class Honeycomb_Emerge : MonoBehaviour
 
     public void enemyMoveDirect(int enemy_num)
     {
+        //敵がプレイヤーのほうを向く
         spawnedEnemy[enemy_num].transform.LookAt(Player.transform.position);
-        // 変数 distance を作成してオブジェクトの位置とターゲットオブジェクトの距離を格納
-        float dist = Vector3.Distance(spawnedEnemy[enemy_num].transform.position, Player.transform.position);
-        // オブジェクトとターゲットオブジェクトの距離判定
-        // 変数 distance（ターゲットオブジェクトとオブジェクトの距離）が変数 moveDistance の値より小さければ
-        // さらに変数 distance が変数 stopDistance の値よりも大きい場合
-        if (dist < moveDistance && dist > stopDistance)
-        {
-            // 変数 moveSpeed を乗算した速度でオブジェクトを前方向に移動する
-            transform.position = transform.position + transform.forward * moveSpeed * Time.deltaTime;
-        }
+
+        // 変数 moveSpeed を乗算した速度でオブジェクトを前方向に移動する
+        spawnedEnemy[enemy_num].transform.position = spawnedEnemy[enemy_num].transform.position + spawnedEnemy[enemy_num].transform.forward * moveSpeed * Time.deltaTime;
     }
 }
+
