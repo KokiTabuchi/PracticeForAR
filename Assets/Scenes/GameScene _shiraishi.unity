@@ -2981,7 +2981,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a36d9a4ef034624e9e6204d12c38ca0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Player: {fileID: 0}
+  Player: {fileID: 819875520}
   comb: {fileID: 341066330}
   bee: []
 --- !u!114 &341066336
@@ -4671,6 +4671,10 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   weaponButton: {fileID: 0}
+  weaponIcon:
+  - {fileID: 0}
+  - {fileID: 0}
+  isTouch: 0
 --- !u!54 &1700410572
 Rigidbody:
   m_ObjectHideFlags: 0

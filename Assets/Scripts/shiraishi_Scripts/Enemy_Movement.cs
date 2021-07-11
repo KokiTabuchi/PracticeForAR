@@ -4,17 +4,48 @@ using UnityEngine;
 
 public class Enemy_Movement : MonoBehaviour
 {
+    GameObject bee = new GameObject();
+    int move_pattern_rnd = Random.Range(1, 3);
     // Start is called before the first frame update
     void Start()
     {
-        
+      
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        switch (move_pattern_rnd)
+        {
+            case 1:
+                movePatternOne();
+                break;
+            case 2:
+                movePatternTwo();
+                break;
+            case 3:
+                movePatternThird();
+                break;
+            default:break;
+        }
     }
+
+    void movePatternOne()
+    {
+
+    }
+
+    void movePatternTwo()
+    {
+
+    }
+
+    void movePatternThird()
+    {
+
+    }
+
+
 
     /*
    //“G‚ðœpœj‚·‚é‚æ‚¤‚É“®‚©‚·ƒXƒNƒŠƒvƒg

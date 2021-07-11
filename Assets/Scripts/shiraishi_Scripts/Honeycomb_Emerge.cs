@@ -44,9 +44,7 @@ public class Honeycomb_Emerge : MonoBehaviour
     public Vector3[][] wayPoints2 = new Vector3[10][];//蜂それぞれに対して徘徊するポイントの座標を代入するVector3型の変数を配列で作る
     private int currentRoot=0;//現在目指すポイントを代入する変数
     private int Mode;//敵の行動パターンを分けるための変数
-    //public Transform player;//プレイヤーの位置を取得するためのTransform型の変数
-    //public Transform enemypos;//敵の位置を取得するためのTransform型の変数
-    //private NavMeshAgent agent;//NavMeshAgentの情報を取得するためのNavmeshagent型の変数
+
 
     //敵の速さ
     float moveSpeed = 0.4f;
@@ -54,8 +52,6 @@ public class Honeycomb_Emerge : MonoBehaviour
     public void Start()
     {
         
-        //Player = GameObject.Find("Player");
-        // agent = GetComponent<NavMeshAgent>();//NavMeshAgentの情報をagentに代入
         comb.SetActive(false);//蜂の巣を非表示にする
         setHonneyComb();//蜂の巣オブジェクトを表示する場所をランダムで決定
 
@@ -86,12 +82,9 @@ public class Honeycomb_Emerge : MonoBehaviour
             {
                 Emerge_Comb();
             }
-            //一定時間で敵を生成
-            //if (timer > enemyInterval)
-            //{
+            
                 timer = 0.0f;
                 emergeBee();//蜂を発生させるメソッドの呼び出し
-           // }
            
         }
 
@@ -121,11 +114,13 @@ public class Honeycomb_Emerge : MonoBehaviour
     //巣から蜂を発生させるスクリプト
     public void emergeBee()
     {
+        Debug.Log("出現");
         //蜂を生成する(数は配列文だけで、場所は蜂の巣の外側から
-        for(int i = 0; i< bee.Length; i++)
+        for (int i = 0; i< bee.Length; i++)
         {
             if (!spawnedEnemy[i])
             {
+               
                 spawnedEnemy[i] = Instantiate(bee[i],
                         new Vector3(honeycomb_pos_x + (comb.transform.localScale.x / 2)*Random.Range(-5.0f,5.0f),
                                     honeycomb_pos_y + comb.transform.localScale.y / 2,
