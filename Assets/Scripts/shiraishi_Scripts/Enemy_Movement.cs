@@ -4,12 +4,46 @@ using UnityEngine;
 
 public class Enemy_Movement : MonoBehaviour
 {
-    GameObject bee = new GameObject();
-    int move_pattern_rnd = Random.Range(1, 3);
+    //
+    public GameObject bee;
+    public GameObject Player;
+    public GameObject Comb;
+
+    //敵のスピード
+    public float moveSpeed = 1.0f;
+    int move_pattern_rnd ;
+
+    //ランダムに動く際の目標地点 
+    private Vector3[] wayPoints = new Vector3[5];
+    int currentrout;
+
+
+    //巣の周りを回るときの巣からの距離
+    private Vector3 distanceFromTarget;
+    //　現在の角度
+    private float angle;
+
     // Start is called before the first frame update
     void Start()
     {
-      
+        //敵の動きをランダムに決める 
+        move_pattern_rnd = Random.Range(1, 4);
+
+        //ランダムに動く目標地点を決める
+        currentrout = 0;
+        for (int i = 0; i < wayPoints.Length; i++)
+        {
+            wayPoints[i] = new Vector3(Comb.transform.position.x + Random.Range(-5.0f,5.0f), 
+                                       Comb.transform.position.y + Random.Range(-5.0f, 5.0f), 
+                                       Comb.transform.position.z + Random.Range(-5.0f, 5.0f)
+                                       );
+        }
+
+        //巣の周りをどのくらいの距離で飛ぶかを決める
+        distanceFromTarget = new Vector3(Comb.transform.position.x+(Comb.transform.localScale.x/2)+1.0f, 
+                                        Comb.transform.position.y + (Comb.transform.localScale.y / 2) + 1.0f,
+                                        Comb.transform.position.z + (Comb.transform.localScale.z / 2) + 1.0f
+                                        );
     }
 
     // Update is called once per frame
@@ -26,83 +60,50 @@ public class Enemy_Movement : MonoBehaviour
             case 3:
                 movePatternThird();
                 break;
-            default:break;
+            default:
+                break;
         }
     }
 
+    //ダイレクトにプレイヤーのほうに向かってくる敵    
     void movePatternOne()
     {
-
+        bee.transform.LookAt(Player.transform.position);
+        bee.transform.position = bee.transform.position + bee.transform.forward * moveSpeed * Time.deltaTime;
     }
 
+    //ランダムに動き回る敵    
     void movePatternTwo()
     {
+        Debug.Log(wayPoints[0]);
+        Vector3 pos =  wayPoints[currentrout];
+        //目的地に近くなった場合 
+        if (Vector3.Distance(bee.transform.position, pos) < 0.5f)
+        {
 
+            if (currentrout > wayPoints.Length - 2)
+            {
+                currentrout = 0;
+            }
+            else
+            {
+                currentrout += 1;//currentRootを+1する
+            }
+        }
+        bee.transform.LookAt(wayPoints[currentrout]);
+        bee.transform.position = bee.transform.position + bee.transform.forward * moveSpeed * Time.deltaTime;
     }
 
+    //巣の周りを守るように回る敵
     void movePatternThird()
     {
-
+        //　蜂の位置 = 巣の位置 ＋ ターゲットから見たユニットの角度 ×　ターゲットからの距離
+        transform.position = Comb.transform.position + Quaternion.Euler(0f, angle, 0f) * distanceFromTarget;
+        //　蜂自身の角度 = ターゲットから見たユニットの方向の角度を計算しそれをユニットの角度に設定する
+        transform.rotation = Quaternion.LookRotation(transform.position - new Vector3(Comb.transform.position.x, transform.position.y, Comb.transform.position.z), Vector3.up);
+        //　蜂   の角度を変更
+        angle += moveSpeed * Time.deltaTime;
+        //　角度を0～360度の間で繰り返す
+        angle = Mathf.Repeat(angle, 360f);
     }
-
-
-
-    /*
-   //敵を徘徊するように動かすスクリプト
-   public void enemyMoveRandom(int enemy_num)
-   {
-       Debug.Log("移動");
-       //wayPoints[0] = new Vector3(Player.transform.position.x + Random.Range(-6.0f, 6.0f), Player.transform.position.y+ Random.Range(-6.0f, 6.0f), Player.transform.position.z + Random.Range(-6.0f, 6.0f));
-       Vector3 pos = wayPoints2[enemy_num][currentRoot];//Vector3型のposに現在の目的地の座標を代入
-       float distance = Vector3.Distance(spawnedEnemy[enemy_num].transform.position, Player.transform.position);//敵とプレイヤーの距離を求める
-
-       if (distance > 3)
-       {//もしプレイヤーと敵の距離が5以上なら
-           Mode = 0;//Modeを0にする
-       }
-
-       if (distance < 3)
-       {//もしプレイヤーと敵の距離が5以下なら
-           Mode = 1;//Modeを1にする
-       }
-
-       switch (Mode)
-       {//Modeの切り替えは
-
-           case 0://case0の場合
-
-               if (Vector3.Distance(spawnedEnemy[enemy_num].transform.position, pos) < 1f)
-               {//もし敵の位置と現在の目的地との距離が1以下なら
-                   currentRoot += 1;//currentRootを+1する
-                   if (currentRoot > wayPoints2[enemy_num].Length - 1)
-                   {//もしcurrentRootがwayPointsの要素数-1より大きいなら
-                       currentRoot = 0;//currentRootを0にする
-                   }
-               }
-               //次の目的場所を向く
-               spawnedEnemy[enemy_num].transform.LookAt(wayPoints2[enemy_num][currentRoot]);
-               spawnedEnemy[enemy_num].transform.position = spawnedEnemy[enemy_num].transform.position + spawnedEnemy[enemy_num].transform.forward * moveSpeed * Time.deltaTime;//GetComponent<NavMeshAgent>().SetDestination(pos);//NavMeshAgentの情報を取得し目的地をposにする
-               break;//switch文の各パターンの最後につける
-
-           case 1://case1の場合
-               enemyMoveDirect(enemy_num);//プレイヤーに向かって進む		
-               break;//switch文の各パターンの最後につける
-       }
-
-       //敵の移動目的ポイントの変更
-       //float Targetpoint = Random.Range(-3.0f, 3.0f);
-     //  wayPoints[0] = new Vector3(Player.transform.position.x + Random.Range(-6.0f, 6.0f), Player.transform.position.y + Random.Range(-6.0f, 6.0f), Player.transform.position.z + Random.Range(-6.0f, 6.0f));
-      // wayPoints[1] = new Vector3(Player.transform.position.x + Random.Range(-6.0f, 6.0f), Player.transform.position.y + Random.Range(-6.0f, 6.0f), Player.transform.position.z + Random.Range(-6.0f, 6.0f));
-      // wayPoints[2] = new Vector3(Player.transform.position.x + Random.Range(-6.0f, 6.0f), Player.transform.position.y + Random.Range(-6.0f, 6.0f), Player.transform.position.z + Random.Range(-6.0f, 6.0f));
-   }
-
-   public void enemyMoveDirect(int enemy_num)
-   {
-       //敵がプレイヤーのほうを向く
-       spawnedEnemy[enemy_num].transform.LookAt(Player.transform.position);
-
-       // 変数 moveSpeed を乗算した速度でオブジェクトを前方向に移動する
-       spawnedEnemy[enemy_num].transform.position = spawnedEnemy[enemy_num].transform.position + spawnedEnemy[enemy_num].transform.forward * moveSpeed * Time.deltaTime;
-   }
-   */
 }

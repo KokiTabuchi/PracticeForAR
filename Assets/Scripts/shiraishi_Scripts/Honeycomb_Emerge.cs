@@ -36,12 +36,7 @@ public class Honeycomb_Emerge : MonoBehaviour
     float timer = 0.0f;
     float enemyInterval = 3.0f;
 
-  
-     //IDictionary<int, Vector3> map = new Dictionary<int, Vector3>();
-    //List<int> list = new List<int>(10);
-
     Vector3[] wayPoints = new Vector3[3];//徘徊するポイントの座標を代入するVector3型の変数を配列で作る
-    public Vector3[][] wayPoints2 = new Vector3[10][];//蜂それぞれに対して徘徊するポイントの座標を代入するVector3型の変数を配列で作る
     private int currentRoot=0;//現在目指すポイントを代入する変数
     private int Mode;//敵の行動パターンを分けるための変数
 
@@ -62,13 +57,7 @@ public class Honeycomb_Emerge : MonoBehaviour
         wayPoints[1] = new Vector3(Player.transform.position.x + Random.Range(-6.0f, 6.0f), Player.transform.position.y + Random.Range(-6.0f, 6.0f), Player.transform.position.z + Random.Range(-6.0f, 6.0f));
         wayPoints[2] = new Vector3(Player.transform.position.x + Random.Range(-6.0f, 6.0f), Player.transform.position.y + Random.Range(-6.0f, 6.0f), Player.transform.position.z + Random.Range(-6.0f, 6.0f));
       */
-        for(int i = 0; i < wayPoints2.Length; i++)
-        {
-            for(int j = 0; j < 3; j++)
-            {
-                wayPoints2[i][j] = new Vector3(Player.transform.position.x + Random.Range(-6.0f, 6.0f), Player.transform.position.y + Random.Range(-6.0f, 6.0f), Player.transform.position.z + Random.Range(-6.0f, 6.0f));
-            }
-        }
+
     }
     public void Update()
     {
