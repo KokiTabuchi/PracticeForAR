@@ -14,15 +14,24 @@ public class PlayerController : MonoBehaviour
     private ParticleSystem ps;
     private GameObject shotLaser;
 
-    private int WeaponNumber;
+    //最初はスプレー
+    private int WeaponNumber =0;
 
+    //ボタンそのもの
     [SerializeField]
     private GameObject weaponButton;
+    //アイコンの種類数
+    [SerializeField]
+    private Sprite[] weaponIcon = new Sprite[2];
+    //ボタンのアイコン
+    private Image weaponButtonIcon;
 
+    public bool isTouch;
 
     // Start is called before the first frame update
     void Start()
     {
+        weaponButtonIcon = weaponButton.GetComponent<Image>();
         //まずはスプレーを装備した状態にする
         ChangeWeapon();
     }
@@ -42,6 +51,7 @@ public class PlayerController : MonoBehaviour
             if (Input.GetMouseButtonDown(0))
             {
                 Debug.Log("タッチ！");
+                isTouch = true;
                 Attack();
             }
 
@@ -54,6 +64,7 @@ public class PlayerController : MonoBehaviour
 
             else if (Input.GetMouseButtonUp(0))
             {
+                isTouch = false;
                 //スプレー停止処理
                 StartCoroutine(muzzleStop());
             }
@@ -71,6 +82,7 @@ public class PlayerController : MonoBehaviour
                 if (touch.phase == TouchPhase.Began)
                 {
                     Debug.Log("タッチ！");
+                    isTouch = true;
                     Attack();
                 }
 
@@ -84,6 +96,7 @@ public class PlayerController : MonoBehaviour
                 //指が離れる
                 else if (touch.phase == TouchPhase.Ended)
                 {
+                    isTouch = false;
                     //スプレー停止処理
                     StartCoroutine(muzzleStop());
                 }
@@ -114,9 +127,15 @@ public class PlayerController : MonoBehaviour
         //スプレー噴射のエフェクト終了
         ps.Stop();
         //ParticleのstartLifeTime分待つ
-        yield return new WaitForSeconds(ps.main.startLifetime.constant);
-        //衝突判定も消す
-        muzzle.SetActive(false);
+        yield return new WaitForSeconds(ps.main.startLifetime.constant * 0.95f);
+
+        //前のパーティクルに対するmuzzleStop処理が今放出中のパーティクルを対象とするのを防ぐためのif文
+        if (isTouch == false)
+        {
+            //衝突判定も消す
+            muzzle.SetActive(false);
+        }
+
     }
 
     //スプレーにあてたときの処理
@@ -132,11 +151,11 @@ public class PlayerController : MonoBehaviour
         switch (WeaponNumber)
         {
             case 0:
-                weaponButton.GetComponent<Image>().color = Color.blue;
+                weaponButtonIcon.sprite = weaponIcon[0];
                 break;
 
             case 1:
-                weaponButton.GetComponent<Image>().color = Color.red;
+                weaponButtonIcon.sprite = weaponIcon[1];
                 break;
 
             default:
