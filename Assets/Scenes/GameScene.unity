@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.4465782, g: 0.49641252, b: 0.5748167, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657826, g: 0.49641263, b: 0.57481676, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -3226,7 +3226,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   laser: {fileID: 413068629259417203, guid: b06045ce54a477b419359c1765c0b145, type: 3}
-  muzzle: {fileID: 2127809647}
+  weapon:
+  - {fileID: 0}
+  - {fileID: 0}
+  weaponButton: {fileID: 0}
 --- !u!54 &1700410572
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -3287,11 +3290,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemy:
-  - {fileID: 5157227708241520759, guid: ad5e88f0fed285e45a895b918aa78c53, type: 3}
-  - {fileID: 5157227708241520759, guid: ad5e88f0fed285e45a895b918aa78c53, type: 3}
-  - {fileID: 5157227708241520759, guid: ad5e88f0fed285e45a895b918aa78c53, type: 3}
-  - {fileID: 5157227708241520759, guid: ad5e88f0fed285e45a895b918aa78c53, type: 3}
-  - {fileID: 5157227708241520759, guid: ad5e88f0fed285e45a895b918aa78c53, type: 3}
+  - {fileID: 6504863112144089567, guid: 935314b3d20e16a489addf4aed57047d, type: 3}
+  - {fileID: 6504863112144089567, guid: 935314b3d20e16a489addf4aed57047d, type: 3}
+  - {fileID: 6504863112144089567, guid: 935314b3d20e16a489addf4aed57047d, type: 3}
+  - {fileID: 6504863112144089567, guid: 935314b3d20e16a489addf4aed57047d, type: 3}
+  - {fileID: 6504863112144089567, guid: 935314b3d20e16a489addf4aed57047d, type: 3}
   player: {fileID: 1700410568}
   heart: {fileID: 819875520}
   scoreText: {fileID: 273919632}
