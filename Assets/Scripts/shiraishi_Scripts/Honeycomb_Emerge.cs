@@ -14,6 +14,7 @@ public class Honeycomb_Emerge : MonoBehaviour
 
     //蜂の殺した数 Killed_Enemy_Countクラスのインスタンス変数
     Killed_Enemy_Count killed_enemy_num = new Killed_Enemy_Count();
+    GameSceneManager killed_Manager  = new GameSceneManager();
 
     //蜂を殺したら巣が出現するための一定条件
     const int killedEnemy_upper_limit = 0;
@@ -44,7 +45,7 @@ public class Honeycomb_Emerge : MonoBehaviour
     //private NavMeshAgent agent;//NavMeshAgentの情報を取得するためのNavmeshagent型の変数
 
     //敵の速さ
-    float moveSpeed = 2.0f;
+    float moveSpeed = 1.0f;
 
     public void Start()
     {
@@ -54,9 +55,9 @@ public class Honeycomb_Emerge : MonoBehaviour
         setHonneyComb();//蜂の巣オブジェクトを表示する場所をランダムで決定
 
         //敵の移動目的ポイント３つ設定
-        wayPoints[0] = new Vector3(Player.transform.position.x + 3.0f, Player.transform.position.y, Player.transform.position.z);
-        wayPoints[1] = new Vector3(Player.transform.position.x, Player.transform.position.y+3.0f, Player.transform.position.z);
-        wayPoints[2] = new Vector3(Player.transform.position.x, Player.transform.position.y, Player.transform.position.z+3.0f);
+        wayPoints[0] = new Vector3(Player.transform.position.x + 7.0f, Player.transform.position.y, Player.transform.position.z);
+        wayPoints[1] = new Vector3(Player.transform.position.x, Player.transform.position.y+7.0f, Player.transform.position.z);
+        wayPoints[2] = new Vector3(Player.transform.position.x, Player.transform.position.y, Player.transform.position.z+7.0f);
     }
     public void Update()
     {
@@ -71,11 +72,11 @@ public class Honeycomb_Emerge : MonoBehaviour
                 Emerge_Comb();
             }
             //一定時間で敵を生成
-            if (timer > enemyInterval)
-            {
+            //if (timer > enemyInterval)
+            //{
                 timer = 0.0f;
                 emergeBee();//蜂を発生させるメソッドの呼び出し
-            }
+            //}
            
         }
 
@@ -111,7 +112,7 @@ public class Honeycomb_Emerge : MonoBehaviour
             if (!spawnedEnemy[i])
             {
                 spawnedEnemy[i] = Instantiate(bee[i],
-                        new Vector3(honeycomb_pos_x + comb.transform.localScale.x / 2,
+                        new Vector3(honeycomb_pos_x + (comb.transform.localScale.x / 2)*Random.Range(-5.0f,5.0f),
                                     honeycomb_pos_y + comb.transform.localScale.y / 2,
                                     honeycomb_pos_z + comb.transform.localScale.z / 2
                                     ),
@@ -132,12 +133,12 @@ public class Honeycomb_Emerge : MonoBehaviour
         Vector3 pos = wayPoints[currentRoot];//Vector3型のposに現在の目的地の座標を代入
         float distance = Vector3.Distance(spawnedEnemy[enemy_num].transform.position, Player.transform.position);//敵とプレイヤーの距離を求める
 
-        if (distance > 5)
+        if (distance > 3)
         {//もしプレイヤーと敵の距離が5以上なら
             Mode = 0;//Modeを0にする
         }
 
-        if (distance < 5)
+        if (distance < 3)
         {//もしプレイヤーと敵の距離が5以下なら
             Mode = 1;//Modeを1にする
         }
@@ -147,7 +148,7 @@ public class Honeycomb_Emerge : MonoBehaviour
 
             case 0://case0の場合
 
-                if (Vector3.Distance(transform.position, pos) < 1f)
+                if (Vector3.Distance(spawnedEnemy[enemy_num].transform.position, pos) < 1f)
                 {//もし敵の位置と現在の目的地との距離が1以下なら
                     currentRoot += 1;//currentRootを+1する
                     if (currentRoot > wayPoints.Length - 1)
@@ -157,7 +158,7 @@ public class Honeycomb_Emerge : MonoBehaviour
                 }
                 //次の目的場所を向く
                 spawnedEnemy[enemy_num].transform.LookAt(wayPoints[currentRoot]);
-                transform.position = transform.position + transform.forward * moveSpeed * Time.deltaTime;//GetComponent<NavMeshAgent>().SetDestination(pos);//NavMeshAgentの情報を取得し目的地をposにする
+                spawnedEnemy[enemy_num].transform.position = spawnedEnemy[enemy_num].transform.position + spawnedEnemy[enemy_num].transform.forward * moveSpeed * Time.deltaTime;//GetComponent<NavMeshAgent>().SetDestination(pos);//NavMeshAgentの情報を取得し目的地をposにする
                 break;//switch文の各パターンの最後につける
 
             case 1://case1の場合
@@ -166,10 +167,10 @@ public class Honeycomb_Emerge : MonoBehaviour
         }
 
         //敵の移動目的ポイントの変更
-        float Targetpoint = Random.Range(-3.0f, 3.0f);
-        wayPoints[0] = new Vector3(Player.transform.position.x + Targetpoint, Player.transform.position.y, Player.transform.position.z);
-        wayPoints[1] = new Vector3(Player.transform.position.x, Player.transform.position.y + Targetpoint, Player.transform.position.z);
-        wayPoints[2] = new Vector3(Player.transform.position.x, Player.transform.position.y, Player.transform.position.z + Targetpoint);
+        //float Targetpoint = Random.Range(-3.0f, 3.0f);
+        wayPoints[0] = new Vector3(Player.transform.position.x + Random.Range(-6.0f, 6.0f), Player.transform.position.y, Player.transform.position.z);
+        wayPoints[1] = new Vector3(Player.transform.position.x, Player.transform.position.y + Random.Range(-6.0f, 6.0f), Player.transform.position.z);
+        wayPoints[2] = new Vector3(Player.transform.position.x, Player.transform.position.y, Player.transform.position.z + Random.Range(-6.0f, 6.0f));
     }
 
     public void enemyMoveDirect(int enemy_num)
