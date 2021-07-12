@@ -68,6 +68,7 @@ public class Enemy_Movement : MonoBehaviour
     //ダイレクトにプレイヤーのほうに向かってくる敵    
     void movePatternOne()
     {
+        //敵のほうを向いて一直線に向かってくる
         bee.transform.LookAt(Player.transform.position);
         bee.transform.position = bee.transform.position + bee.transform.forward * moveSpeed * Time.deltaTime;
     }
@@ -81,7 +82,7 @@ public class Enemy_Movement : MonoBehaviour
         if (Vector3.Distance(bee.transform.position, pos) < 0.5f)
         {
 
-            if (currentrout > wayPoints.Length - 2)
+            if (currentrout > wayPoints.Length - 1)
             {
                 currentrout = 0;
             }
