@@ -21,7 +21,11 @@ public class Enemy_Movement : MonoBehaviour
     //巣の周りを回るときの巣からの距離
     private Vector3 distanceFromTarget;
     //　現在の角度
-    private float angle;
+    private float angle_x=0.0f;
+    private float angle_y = 0.0f;
+    private float angle_z = 0.0f;
+    //蜂の回転する速さ
+    float rotateSpeed = 50.0f;
 
     // Start is called before the first frame update
     void Start()
@@ -40,9 +44,9 @@ public class Enemy_Movement : MonoBehaviour
         }
 
         //巣の周りをどのくらいの距離で飛ぶかを決める
-        distanceFromTarget = new Vector3(Comb.transform.position.x+(Comb.transform.localScale.x/2)+1.0f, 
-                                        Comb.transform.position.y + (Comb.transform.localScale.y / 2) + 1.0f,
-                                        Comb.transform.position.z + (Comb.transform.localScale.z / 2) + 1.0f
+        distanceFromTarget = new Vector3((Comb.transform.localScale.x/2)+2.0f, 
+                                         (Comb.transform.localScale.y / 2) - 2.0f,
+                                          (Comb.transform.localScale.z / 2) + 2.0f
                                         );
     }
 
@@ -82,7 +86,7 @@ public class Enemy_Movement : MonoBehaviour
         if (Vector3.Distance(bee.transform.position, pos) < 0.5f)
         {
 
-            if (currentrout > wayPoints.Length - 1)
+            if (currentrout > wayPoints.Length - 2)
             {
                 currentrout = 0;
             }
@@ -91,20 +95,26 @@ public class Enemy_Movement : MonoBehaviour
                 currentrout += 1;//currentRootを+1する
             }
         }
-        bee.transform.LookAt(wayPoints[currentrout]);
+        bee.transform.rotation = Quaternion.LookRotation(wayPoints[currentrout]);
         bee.transform.position = bee.transform.position + bee.transform.forward * moveSpeed * Time.deltaTime;
     }
 
     //巣の周りを守るように回る敵
     void movePatternThird()
     {
+        //蜂の位置　＝　巣の位置　＋　巣の位置と蜂のある位置の角度　×　巣からユニットまでのベクトル
         //　蜂の位置 = 巣の位置 ＋ ターゲットから見たユニットの角度 ×　ターゲットからの距離
-        transform.position = Comb.transform.position + Quaternion.Euler(0f, angle, 0f) * distanceFromTarget;
-        //　蜂自身の角度 = ターゲットから見たユニットの方向の角度を計算しそれをユニットの角度に設定する
-        transform.rotation = Quaternion.LookRotation(transform.position - new Vector3(Comb.transform.position.x, transform.position.y, Comb.transform.position.z), Vector3.up);
+        bee.transform.position = Comb.transform.position + Quaternion.Euler(angle_x, angle_y, angle_z) * distanceFromTarget;
+        //　蜂自身の角度 = 巣から見たユニットの方向の角度を計算しそれを蜂の角度に設定する
+        bee.transform.rotation = Quaternion.LookRotation(bee.transform.position - new Vector3(Comb.transform.position.x, Comb.transform.position.y, Comb.transform.position.z), Vector3.up);
+        bee.transform.rotation = Quaternion.LookRotation(Vector3.forward);
         //　蜂   の角度を変更
-        angle += moveSpeed * Time.deltaTime;
+        angle_x += rotateSpeed * Time.deltaTime;
+        angle_y += rotateSpeed * Time.deltaTime;
+        angle_z += rotateSpeed * Time.deltaTime;
         //　角度を0～360度の間で繰り返す
-        angle = Mathf.Repeat(angle, 360f);
+        angle_x = Mathf.Repeat(angle_y, 360f);
+        angle_y = Mathf.Repeat(angle_y, 360f);
+        angle_z = Mathf.Repeat(angle_y, 360f);
     }
 }
