@@ -102,7 +102,7 @@ public class Enemy_Movement : MonoBehaviour
     //巣の周りを守るように回る敵
     void movePatternThird()
     {
-        //蜂の位置　＝　巣の位置　＋　巣の位置と蜂のある位置の角度　×　巣からユニットまでのベクトル
+        //蜂の位置　＝　巣の位置　＋　巣の位置と蜂のある位置の角度　×　巣から蜂までのベクトル
         //　蜂の位置 = 巣の位置 ＋ ターゲットから見たユニットの角度 ×　ターゲットからの距離
         bee.transform.position = Comb.transform.position + Quaternion.Euler(angle_x, angle_y, angle_z) * distanceFromTarget;
         //　蜂自身の角度 = 巣から見たユニットの方向の角度を計算しそれを蜂の角度に設定する
