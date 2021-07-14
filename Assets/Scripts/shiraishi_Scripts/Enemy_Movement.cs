@@ -14,7 +14,7 @@ public class Enemy_Movement : MonoBehaviour
     int move_pattern_rnd ;
 
     //ランダムに動く際の目標地点 
-    private Vector3[] wayPoints = new Vector3[5];
+    private Vector3[] wayPoints = new Vector3[10];
     int currentrout;
 
 
@@ -44,9 +44,9 @@ public class Enemy_Movement : MonoBehaviour
         }
 
         //巣の周りをどのくらいの距離で飛ぶかを決める
-        distanceFromTarget = new Vector3((Comb.transform.localScale.x/2)+2.0f, 
-                                         (Comb.transform.localScale.y / 2) - 2.0f,
-                                          (Comb.transform.localScale.z / 2) + 2.0f
+        distanceFromTarget = new Vector3((Comb.transform.localScale.x/2)+ Random.Range(-2.0f, 2.0f), 
+                                         (Comb.transform.localScale.y / 2) + Random.Range(-2.0f,2.0f),
+                                          (Comb.transform.localScale.z / 2) + Random.Range(-2.0f, 2.0f)
                                         );
     }
 
