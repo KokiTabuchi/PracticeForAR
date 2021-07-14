@@ -23,8 +23,8 @@ public class EnemyController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //gameSceneManager = GameObject.Find("GameSceneManager");
-        //manager = gameSceneManager.GetComponent<GameSceneManager>();
+        gameSceneManager = GameObject.Find("GameSceneManager");
+        manager = gameSceneManager.GetComponent<GameSceneManager>();
         //Animation();
         animator = GetComponent<Animator>();
         animator.SetTrigger("is_walking");
@@ -73,22 +73,35 @@ public class EnemyController : MonoBehaviour
     }
 
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider other)
     {
         //Playerにぶつかったときの挙動
-        if (collision.gameObject.tag == "Player")
+        if (other.gameObject.tag == "Player")
         {
-            //Debug.Log("うっ...！");
-            Destroy(this.gameObject);
+            Debug.Log("うっ...！");
+            //Destroy(this.gameObject);
             //animator.SetBool("", true);
         }
 
-        //Laserにぶつかったときの挙動
-        if (collision.gameObject.tag == "Laser")
+        //武器にぶつかってるときの挙動
+        switch (other.gameObject.tag)
         {
-            Destroy(collision.gameObject);
-            manager.getScore = true;
+            case "Spray":
+                Debug.Log("スプレー！！");
+                manager.getScore = true;
+                break;
 
+            case "Flame":
+                Debug.Log("あつい！！");
+                break;
+
+            default:
+
+                break;
+        }
+
+        if (other.gameObject.tag == "Laser")
+        {
             Destroy(this.gameObject);
         }
     }

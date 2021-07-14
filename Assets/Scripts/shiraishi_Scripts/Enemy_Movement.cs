@@ -6,8 +6,8 @@ public class Enemy_Movement : MonoBehaviour
 {
     //
     public GameObject bee;
-    public GameObject Player;
-    public GameObject Comb;
+    public GameObject target;
+    public GameObject comb;
 
     //敵のスピード
     public float moveSpeed = 1.0f;
@@ -17,19 +17,23 @@ public class Enemy_Movement : MonoBehaviour
     private Vector3[] wayPoints = new Vector3[10];
     int currentrout;
 
-
     //巣の周りを回るときの巣からの距離
     private Vector3 distanceFromTarget;
+
     //　現在の角度
     private float angle_x=0.0f;
     private float angle_y = 0.0f;
     private float angle_z = 0.0f;
+
     //蜂の回転する速さ
     float rotateSpeed = 50.0f;
 
     // Start is called before the first frame update
     void Start()
     {
+        target = GameObject.Find("Heart");
+        comb = GameObject.Find("HoneyComb");
+
         //敵の動きをランダムに決める 
         move_pattern_rnd = Random.Range(1, 4);
 
@@ -37,16 +41,16 @@ public class Enemy_Movement : MonoBehaviour
         currentrout = 0;
         for (int i = 0; i < wayPoints.Length; i++)
         {
-            wayPoints[i] = new Vector3(Comb.transform.position.x + Random.Range(-5.0f,5.0f), 
-                                       Comb.transform.position.y + Random.Range(-5.0f, 5.0f), 
-                                       Comb.transform.position.z + Random.Range(-5.0f, 5.0f)
+            wayPoints[i] = new Vector3(comb.transform.position.x + Random.Range(-5.0f,5.0f), 
+                                       comb.transform.position.y + Random.Range(-5.0f, 5.0f), 
+                                       comb.transform.position.z + Random.Range(-5.0f, 5.0f)
                                        );
         }
 
         //巣の周りをどのくらいの距離で飛ぶかを決める
-        distanceFromTarget = new Vector3((Comb.transform.localScale.x/2)+ Random.Range(-2.0f, 2.0f), 
-                                         (Comb.transform.localScale.y / 2) + Random.Range(-2.0f,2.0f),
-                                          (Comb.transform.localScale.z / 2) + Random.Range(-2.0f, 2.0f)
+        distanceFromTarget = new Vector3((comb.transform.localScale.x/2)+ Random.Range(-2.0f, 2.0f), 
+                                         (comb.transform.localScale.y / 2) + Random.Range(-2.0f,2.0f),
+                                         (comb.transform.localScale.z / 2) + Random.Range(-2.0f, 2.0f)
                                         );
     }
 
@@ -73,14 +77,13 @@ public class Enemy_Movement : MonoBehaviour
     void movePatternOne()
     {
         //敵のほうを向いて一直線に向かってくる
-        bee.transform.LookAt(Player.transform.position);
+        bee.transform.LookAt(target.transform.position);
         bee.transform.position = bee.transform.position + bee.transform.forward * moveSpeed * Time.deltaTime;
     }
 
     //ランダムに動き回る敵    
     void movePatternTwo()
     {
-        Debug.Log(wayPoints[0]);
         Vector3 pos =  wayPoints[currentrout];
         //目的地に近くなった場合 
         if (Vector3.Distance(bee.transform.position, pos) < 0.5f)
@@ -104,9 +107,9 @@ public class Enemy_Movement : MonoBehaviour
     {
         //蜂の位置　＝　巣の位置　＋　巣の位置と蜂のある位置の角度　×　巣から蜂までのベクトル
         //　蜂の位置 = 巣の位置 ＋ ターゲットから見たユニットの角度 ×　ターゲットからの距離
-        bee.transform.position = Comb.transform.position + Quaternion.Euler(angle_x, angle_y, angle_z) * distanceFromTarget;
+        bee.transform.position = comb.transform.position + Quaternion.Euler(angle_x, angle_y, angle_z) * distanceFromTarget;
         //　蜂自身の角度 = 巣から見たユニットの方向の角度を計算しそれを蜂の角度に設定する
-        bee.transform.rotation = Quaternion.LookRotation(bee.transform.position - new Vector3(Comb.transform.position.x, Comb.transform.position.y, Comb.transform.position.z), Vector3.up);
+        bee.transform.rotation = Quaternion.LookRotation(bee.transform.position - new Vector3(comb.transform.position.x, comb.transform.position.y, comb.transform.position.z), Vector3.up);
         bee.transform.rotation = Quaternion.LookRotation(Vector3.forward);
         //　蜂   の角度を変更
         angle_x += rotateSpeed * Time.deltaTime;

@@ -138,12 +138,6 @@ public class PlayerController : MonoBehaviour
 
     }
 
-    //スプレーにあてたときの処理
-    private void OnTriggerEnter(Collider other)
-    {
-        Debug.Log("衝突！");
-    }
-
     //武器変更ボタンを押した時の処理
     public void WeaponButtonDown()
     {

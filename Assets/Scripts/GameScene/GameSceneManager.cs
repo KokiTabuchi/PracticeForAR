@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.XR.ARFoundation;
+using Doozy.Engine;
 
 public class GameSceneManager : MonoBehaviour
 {
@@ -17,14 +18,23 @@ public class GameSceneManager : MonoBehaviour
 
     private float timer;
     private float enemyInterval = 3f;
+    //時間制限
+    private float timeLimit = 10f;
 
     [SerializeField]
     private TextMeshProUGUI scoreText;
     private float score;
 
+    public int killedCounter;
     public bool getScore;
 
-    //敵位置生成用関数
+    //巣が出現するために必要な蜂の数条件
+    const int killedEnemy_upper_limit = 2;
+    //クリアに必要な蜂の数条件
+    const int killEnemyComplete = 5;
+    public bool honeyComb = false;
+
+    //敵位置生成用変数
     private float theta;
     private float minTheta = -180f;
     private float maxTheta = 180f;
@@ -37,6 +47,7 @@ public class GameSceneManager : MonoBehaviour
     void Start()
     {
         SpawnEnemy();
+        killedCounter = 0;
         score = 0f;
     }
 
@@ -52,13 +63,6 @@ public class GameSceneManager : MonoBehaviour
             SpawnEnemy();
         }
 
-        //敵にレーザーが当たったときの処理
-        if (getScore == true)
-        {
-            StartCoroutine(ScoreAnimation(100f, 1f));
-            getScore = false;
-        }
-
         //敵の向き
         for (int i = 0; i < 5; i++)
         {
@@ -66,6 +70,34 @@ public class GameSceneManager : MonoBehaviour
             {
                 spawnedEnemy[i].transform.LookAt(heart.transform.position);
             }
+        }
+
+        //敵に武器が当たったときの処理
+        if (getScore == true)
+        {
+            StartCoroutine(ScoreAnimation(100f, 1f));
+            killedCounter += 1;
+            getScore = false;
+        }
+
+        //蜂の巣を出現させるかどうかの条件
+        if (killedCounter >= killedEnemy_upper_limit)
+        {
+            //これをHoneycomb_Emergeスクリプトに渡す
+            honeyComb = true;
+            //繰り返し処理の停止はHoneycomb_Emergwスクリプトがやってくれてるので不要
+        }
+
+        //クリア処理
+        if (killedCounter >= killEnemyComplete)
+        {
+            GameEventMessage.SendEvent("ClearScene");
+        }
+
+        //ゲームオーバー処理
+        if (timeLimit - timer <= 0f)
+        {
+            GameEventMessage.SendEvent("GameOverScene");
         }
     }
 
