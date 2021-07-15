@@ -27,9 +27,17 @@ public class Enemy_Movement : MonoBehaviour
     //–I‚Ì‰ñ“]‚·‚é‘¬‚³
     float rotateSpeed = 50.0f;
 
+
+    //KilledEnemyCountManager killedEnemy;// = new KilledEnemyCountManager();
     // Start is called before the first frame update
     void Start()
     {
+       /* GameObject kE;
+        kE = GameObject.Find("KilledEnemyCountManager");
+        killedEnemy = kE.GetComponent<KilledEnemyCountManager>();
+        int kilnum = killedEnemy.getKilledEnemyNum();
+*/
+
         //“G‚Ì“®‚«‚ðƒ‰ƒ“ƒ_ƒ€‚ÉŒˆ‚ß‚é 
         move_pattern_rnd = Random.Range(1, 4);
 
