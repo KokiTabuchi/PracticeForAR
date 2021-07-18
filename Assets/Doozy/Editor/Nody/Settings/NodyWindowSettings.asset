@@ -40,15 +40,16 @@ MonoBehaviour:
   RecentlyOpenedGraphs:
   - {fileID: 11400000, guid: 3619c40c57eee7a46802405c2cc58be0, type: 2}
   CopiedNodes: []
-  DeletedNodes: []
-  SelectedNodes:
-  - {fileID: -3711624624979625979, guid: 3619c40c57eee7a46802405c2cc58be0, type: 2}
+  DeletedNodes:
+  - {fileID: -8119962881805396834, guid: 3619c40c57eee7a46802405c2cc58be0, type: 2}
+  - {fileID: 3367090977669827099, guid: 3619c40c57eee7a46802405c2cc58be0, type: 2}
+  SelectedNodes: []
   GraphTabs:
   - IsRootTab: 1
     Graph: {fileID: 11400000, guid: 3619c40c57eee7a46802405c2cc58be0, type: 2}
     SubGraphNode: {fileID: 0}
-    Zoom: 0.6
-    PanOffset: {x: 429.66672, y: 216.29999}
+    Zoom: 0.8
+    PanOffset: {x: 207.56036, y: 189.7137}
     SelectedNodes: []
     DeletedNodes: []
   CurrentView: 1

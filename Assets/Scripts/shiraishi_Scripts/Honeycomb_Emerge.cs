@@ -2,22 +2,23 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR.ARFoundation;
-using DG.Tweening;
-using UnityEngine.AI;//NavMeshagentを使うために記述する
 
 public class Honeycomb_Emerge : MonoBehaviour
 {
     //ゲームのプレイヤーのオブジェクト  
-    public GameObject Player;
+    public GameObject player;
     //蜂の巣のゲームオブジェクト
     public GameObject comb;
+
+    //GameSceneMaangerを取得
+    public GameObject gameSceneManager;
+    private GameSceneManager manager;
 
     //蜂の殺した数 Killed_Enemy_Countクラスのインスタンス変数
     Killed_Enemy_Count killed_enemy_num = new Killed_Enemy_Count();
     GameSceneManager killed_Manager = new GameSceneManager();
 
-    //蜂を殺したら巣が出現するための一定条件
-    const int killedEnemy_upper_limit = 0;
+    //
 
     //蜂の巣の位置を初期化
     float honeycomb_pos_x = 0.0f;
@@ -36,55 +37,38 @@ public class Honeycomb_Emerge : MonoBehaviour
     float timer = 0.0f;
     float enemyInterval = 3.0f;
 
-    Vector3[] wayPoints = new Vector3[3];//徘徊するポイントの座標を代入するVector3型の変数を配列で作る
-    private int currentRoot=0;//現在目指すポイントを代入する変数
-    private int Mode;//敵の行動パターンを分けるための変数
-
-
     //敵の速さ
     float moveSpeed = 0.4f;
 
     public void Start()
     {
-        
         comb.SetActive(false);//蜂の巣を非表示にする
         setHonneyComb();//蜂の巣オブジェクトを表示する場所をランダムで決定
 
-        /*   wayPoints[0] = new Vector3(Player.transform.position.x + 7.0f, Player.transform.position.y, Player.transform.position.z);
-           wayPoints[1] = new Vector3(Player.transform.position.x, Player.transform.position.y+7.0f, Player.transform.position.z);
-           wayPoints[2] = new Vector3(Player.transform.position.x, Player.transform.position.y, Player.transform.position.z+7.0f);*/
-      /*  wayPoints[0] = new Vector3(Player.transform.position.x + Random.Range(-6.0f, 6.0f), Player.transform.position.y + Random.Range(-6.0f, 6.0f), Player.transform.position.z + Random.Range(-6.0f, 6.0f));
-        wayPoints[1] = new Vector3(Player.transform.position.x + Random.Range(-6.0f, 6.0f), Player.transform.position.y + Random.Range(-6.0f, 6.0f), Player.transform.position.z + Random.Range(-6.0f, 6.0f));
-        wayPoints[2] = new Vector3(Player.transform.position.x + Random.Range(-6.0f, 6.0f), Player.transform.position.y + Random.Range(-6.0f, 6.0f), Player.transform.position.z + Random.Range(-6.0f, 6.0f));
-      */
-
+        manager = gameSceneManager.GetComponent<GameSceneManager>();
     }
+
     public void Update()
     {
         timer += Time.deltaTime;
 
-      
-        //getkilled_Enemyメソッドで倒したエネミーの数を引き取り、巣が発生する上限と比較する
-        if ((killed_enemy_num.getKilled_EnemyNum()) >= killedEnemy_upper_limit)
+        //GameSceneManagerで規定値からの上下を判別する、加えてまだ巣が出ていないことも確認する
+        if (manager.honeyComb == true && isComb == false)
         {
-            if (isComb == false)
-            {
-                Emerge_Comb();
-            }
-            
-                timer = 0.0f;
-                emergeBee();//蜂を発生させるメソッドの呼び出し
-           
-        }
+            //巣を出現させる
+            Emerge_Comb();
 
+            timer = 0.0f;
+            emergeBee();//蜂を発生させるメソッドの呼び出し
+        }
     }
 
     //巣を発生させるためbooleanをtrueに変更するメソッド
     public void Emerge_Comb()
     {
-
         Debug.Log(killed_enemy_num.getKilled_EnemyNum());
         Debug.Log(isComb);
+     
         //巣を表示する
         comb.SetActive(true);
         isComb = true;
@@ -95,7 +79,7 @@ public class Honeycomb_Emerge : MonoBehaviour
     {
         //巣を表示する場所を乱数で決定
         honeycomb_pos_x = Random.Range(-10.0f, 10.0f);
-        honeycomb_pos_y = Random.Range(-10.0f, 10.0f);
+        honeycomb_pos_y = Random.Range(4.0f, 6.0f);
         honeycomb_pos_z = Random.Range(6.0f, 15.0f);
         comb.transform.position = new Vector3( honeycomb_pos_x, honeycomb_pos_y, honeycomb_pos_z);
     }
@@ -115,8 +99,8 @@ public class Honeycomb_Emerge : MonoBehaviour
                                     honeycomb_pos_y + comb.transform.localScale.y / 2,
                                     honeycomb_pos_z + comb.transform.localScale.z / 2
                                     ),
-                         Quaternion.LookRotation(Player.transform.position));
-                spawnedEnemy[i].transform.LookAt(Player.transform.position);
+                         Quaternion.LookRotation(player.transform.position));
+                spawnedEnemy[i].transform.LookAt(player.transform.position);
             }
         }
 

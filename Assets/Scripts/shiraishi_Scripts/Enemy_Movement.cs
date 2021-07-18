@@ -6,25 +6,26 @@ public class Enemy_Movement : MonoBehaviour
 {
     //
     public GameObject bee;
-    public GameObject Player;
-    public GameObject Comb;
+    public GameObject target;
+    public GameObject comb;
 
-    //“G‚ÌƒXƒs[ƒh
+    //ï¿½Gï¿½ÌƒXï¿½sï¿½[ï¿½h
     public float moveSpeed = 1.0f;
     int move_pattern_rnd ;
 
-    //ƒ‰ƒ“ƒ_ƒ€‚É“®‚­Û‚Ì–Ú•W’n“_ 
+    //ï¿½ï¿½ï¿½ï¿½ï¿½_ï¿½ï¿½ï¿½É“ï¿½ï¿½ï¿½ï¿½Û‚Ì–Ú•Wï¿½nï¿½_ 
     private Vector3[] wayPoints = new Vector3[10];
     int currentrout;
 
-
-    //‘ƒ‚Ìü‚è‚ğ‰ñ‚é‚Æ‚«‚Ì‘ƒ‚©‚ç‚Ì‹——£
+    //ï¿½ï¿½ï¿½Ìï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ‚ï¿½ï¿½Ì‘ï¿½ï¿½ï¿½ï¿½ï¿½Ì‹ï¿½ï¿½ï¿½
     private Vector3 distanceFromTarget;
-    //@Œ»İ‚ÌŠp“x
+
+    //ï¿½@ï¿½ï¿½ï¿½İ‚ÌŠpï¿½x
     private float angle_x=0.0f;
     private float angle_y = 0.0f;
     private float angle_z = 0.0f;
-    //–I‚Ì‰ñ“]‚·‚é‘¬‚³
+
+    //ï¿½Iï¿½Ì‰ï¿½]ï¿½ï¿½ï¿½é‘¬ï¿½ï¿½
     float rotateSpeed = 50.0f;
 
 
@@ -32,29 +33,29 @@ public class Enemy_Movement : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-       /* GameObject kE;
-        kE = GameObject.Find("KilledEnemyCountManager");
-        killedEnemy = kE.GetComponent<KilledEnemyCountManager>();
-        int kilnum = killedEnemy.getKilledEnemyNum();
-*/
 
-        //“G‚Ì“®‚«‚ğƒ‰ƒ“ƒ_ƒ€‚ÉŒˆ‚ß‚é 
+=======
+        target = GameObject.Find("Heart");
+        comb = GameObject.Find("HoneyComb");
+>>>>>>> main
+
+        //ï¿½Gï¿½Ì“ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½_ï¿½ï¿½ï¿½ÉŒï¿½ï¿½ß‚ï¿½ 
         move_pattern_rnd = Random.Range(1, 4);
 
-        //ƒ‰ƒ“ƒ_ƒ€‚É“®‚­–Ú•W’n“_‚ğŒˆ‚ß‚é
+        //ï¿½ï¿½ï¿½ï¿½ï¿½_ï¿½ï¿½ï¿½É“ï¿½ï¿½ï¿½ï¿½Ú•Wï¿½nï¿½_ï¿½ï¿½ï¿½ï¿½ï¿½ß‚ï¿½
         currentrout = 0;
         for (int i = 0; i < wayPoints.Length; i++)
         {
-            wayPoints[i] = new Vector3(Comb.transform.position.x + Random.Range(-5.0f,5.0f), 
-                                       Comb.transform.position.y + Random.Range(-5.0f, 5.0f), 
-                                       Comb.transform.position.z + Random.Range(-5.0f, 5.0f)
+            wayPoints[i] = new Vector3(comb.transform.position.x + Random.Range(-5.0f,5.0f), 
+                                       comb.transform.position.y + Random.Range(-5.0f, 5.0f), 
+                                       comb.transform.position.z + Random.Range(-5.0f, 5.0f)
                                        );
         }
 
-        //‘ƒ‚Ìü‚è‚ğ‚Ç‚Ì‚­‚ç‚¢‚Ì‹——£‚Å”ò‚Ô‚©‚ğŒˆ‚ß‚é
-        distanceFromTarget = new Vector3((Comb.transform.localScale.x/2)+ Random.Range(-2.0f, 2.0f), 
-                                         (Comb.transform.localScale.y / 2) + Random.Range(-2.0f,2.0f),
-                                          (Comb.transform.localScale.z / 2) + Random.Range(-2.0f, 2.0f)
+        //ï¿½ï¿½ï¿½Ìï¿½ï¿½ï¿½ï¿½ï¿½Ç‚Ì‚ï¿½ï¿½ç‚¢ï¿½Ì‹ï¿½ï¿½ï¿½ï¿½Å”ï¿½Ô‚ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ß‚ï¿½
+        distanceFromTarget = new Vector3((comb.transform.localScale.x/2)+ Random.Range(-2.0f, 2.0f), 
+                                         (comb.transform.localScale.y / 2) + Random.Range(-2.0f,2.0f),
+                                         (comb.transform.localScale.z / 2) + Random.Range(-2.0f, 2.0f)
                                         );
     }
 
@@ -77,20 +78,19 @@ public class Enemy_Movement : MonoBehaviour
         }
     }
 
-    //ƒ_ƒCƒŒƒNƒg‚ÉƒvƒŒƒCƒ„[‚Ì‚Ù‚¤‚ÉŒü‚©‚Á‚Ä‚­‚é“G    
+    //ï¿½_ï¿½Cï¿½ï¿½ï¿½Nï¿½gï¿½Éƒvï¿½ï¿½ï¿½Cï¿½ï¿½ï¿½[ï¿½Ì‚Ù‚ï¿½ï¿½ÉŒï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½G    
     void movePatternOne()
     {
-        //“G‚Ì‚Ù‚¤‚ğŒü‚¢‚Äˆê’¼ü‚ÉŒü‚©‚Á‚Ä‚­‚é
-        bee.transform.LookAt(Player.transform.position);
+        //ï¿½Gï¿½Ì‚Ù‚ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Äˆê’¼ï¿½ï¿½ï¿½ÉŒï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½
+        bee.transform.LookAt(target.transform.position);
         bee.transform.position = bee.transform.position + bee.transform.forward * moveSpeed * Time.deltaTime;
     }
 
-    //ƒ‰ƒ“ƒ_ƒ€‚É“®‚«‰ñ‚é“G    
+    //ï¿½ï¿½ï¿½ï¿½ï¿½_ï¿½ï¿½ï¿½É“ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½G    
     void movePatternTwo()
     {
-        Debug.Log(wayPoints[0]);
         Vector3 pos =  wayPoints[currentrout];
-        //–Ú“I’n‚É‹ß‚­‚È‚Á‚½ê‡ 
+        //ï¿½Ú“Iï¿½nï¿½É‹ß‚ï¿½ï¿½È‚ï¿½ï¿½ï¿½ï¿½ê‡ 
         if (Vector3.Distance(bee.transform.position, pos) < 0.5f)
         {
 
@@ -100,27 +100,27 @@ public class Enemy_Movement : MonoBehaviour
             }
             else
             {
-                currentrout += 1;//currentRoot‚ğ+1‚·‚é
+                currentrout += 1;//currentRootï¿½ï¿½+1ï¿½ï¿½ï¿½ï¿½
             }
         }
         bee.transform.rotation = Quaternion.LookRotation(wayPoints[currentrout]);
         bee.transform.position = bee.transform.position + bee.transform.forward * moveSpeed * Time.deltaTime;
     }
 
-    //‘ƒ‚Ìü‚è‚ğç‚é‚æ‚¤‚É‰ñ‚é“G
+    //ï¿½ï¿½ï¿½Ìï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½æ‚¤ï¿½É‰ï¿½ï¿½G
     void movePatternThird()
     {
-        //–I‚ÌˆÊ’u@@‘ƒ‚ÌˆÊ’u@{@‘ƒ‚ÌˆÊ’u‚Æ–I‚Ì‚ ‚éˆÊ’u‚ÌŠp“x@~@‘ƒ‚©‚ç–I‚Ü‚Å‚ÌƒxƒNƒgƒ‹
-        //@–I‚ÌˆÊ’u = ‘ƒ‚ÌˆÊ’u { ƒ^[ƒQƒbƒg‚©‚çŒ©‚½ƒ†ƒjƒbƒg‚ÌŠp“x ~@ƒ^[ƒQƒbƒg‚©‚ç‚Ì‹——£
-        bee.transform.position = Comb.transform.position + Quaternion.Euler(angle_x, angle_y, angle_z) * distanceFromTarget;
-        //@–I©g‚ÌŠp“x = ‘ƒ‚©‚çŒ©‚½ƒ†ƒjƒbƒg‚Ì•ûŒü‚ÌŠp“x‚ğŒvZ‚µ‚»‚ê‚ğ–I‚ÌŠp“x‚Éİ’è‚·‚é
-        bee.transform.rotation = Quaternion.LookRotation(bee.transform.position - new Vector3(Comb.transform.position.x, Comb.transform.position.y, Comb.transform.position.z), Vector3.up);
+        //ï¿½Iï¿½ÌˆÊ’uï¿½@ï¿½ï¿½ï¿½@ï¿½ï¿½ï¿½ÌˆÊ’uï¿½@ï¿½{ï¿½@ï¿½ï¿½ï¿½ÌˆÊ’uï¿½Æ–Iï¿½Ì‚ï¿½ï¿½ï¿½Ê’uï¿½ÌŠpï¿½xï¿½@ï¿½~ï¿½@ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Iï¿½Ü‚Å‚Ìƒxï¿½Nï¿½gï¿½ï¿½
+        //ï¿½@ï¿½Iï¿½ÌˆÊ’u = ï¿½ï¿½ï¿½ÌˆÊ’u ï¿½{ ï¿½^ï¿½[ï¿½Qï¿½bï¿½gï¿½ï¿½ï¿½çŒ©ï¿½ï¿½ï¿½ï¿½ï¿½jï¿½bï¿½gï¿½ÌŠpï¿½x ï¿½~ï¿½@ï¿½^ï¿½[ï¿½Qï¿½bï¿½gï¿½ï¿½ï¿½ï¿½Ì‹ï¿½ï¿½ï¿½
+        bee.transform.position = comb.transform.position + Quaternion.Euler(angle_x, angle_y, angle_z) * distanceFromTarget;
+        //ï¿½@ï¿½Iï¿½ï¿½ï¿½gï¿½ÌŠpï¿½x = ï¿½ï¿½ï¿½ï¿½ï¿½çŒ©ï¿½ï¿½ï¿½ï¿½ï¿½jï¿½bï¿½gï¿½Ì•ï¿½ï¿½ï¿½ï¿½ÌŠpï¿½xï¿½ï¿½ï¿½vï¿½Zï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Iï¿½ÌŠpï¿½xï¿½Éİ’è‚·ï¿½ï¿½
+        bee.transform.rotation = Quaternion.LookRotation(bee.transform.position - new Vector3(comb.transform.position.x, comb.transform.position.y, comb.transform.position.z), Vector3.up);
         bee.transform.rotation = Quaternion.LookRotation(Vector3.forward);
-        //@–I   ‚ÌŠp“x‚ğ•ÏX
+        //ï¿½@ï¿½I   ï¿½ÌŠpï¿½xï¿½ï¿½ÏX
         angle_x += rotateSpeed * Time.deltaTime;
         angle_y += rotateSpeed * Time.deltaTime;
         angle_z += rotateSpeed * Time.deltaTime;
-        //@Šp“x‚ğ0`360“x‚ÌŠÔ‚ÅŒJ‚è•Ô‚·
+        //ï¿½@ï¿½pï¿½xï¿½ï¿½0ï¿½`360ï¿½xï¿½ÌŠÔ‚ÅŒJï¿½ï¿½Ô‚ï¿½
         angle_x = Mathf.Repeat(angle_y, 360f);
         angle_y = Mathf.Repeat(angle_y, 360f);
         angle_z = Mathf.Repeat(angle_y, 360f);
